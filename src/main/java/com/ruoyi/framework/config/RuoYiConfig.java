@@ -20,6 +20,8 @@ public class RuoYiConfig
     private String copyrightYear;
     /** 上传路径 */
     private static String profile;
+    /** 回显路径 */
+    private static String showPath;
     /** 获取地址开关 */
     private static boolean addressEnabled;
 
@@ -61,6 +63,13 @@ public class RuoYiConfig
     public void setProfile(String profile)
     {
         RuoYiConfig.profile = profile;
+    }
+    public static String getShowPath() {
+        return showPath;
+    }
+
+    public void setShowPath(String showPath) {
+        RuoYiConfig.showPath = showPath;
     }
 
     public static boolean isAddressEnabled()

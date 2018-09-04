@@ -1,5 +1,6 @@
 package com.ruoyi.project.system.user.controller;
 
+import com.ruoyi.framework.config.RuoYiConfig;
 import org.apache.shiro.crypto.hash.Md5Hash;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +53,7 @@ public class ProfileController extends BaseController
         mmap.put("user", user);
         mmap.put("roleGroup", userService.selectUserRoleGroup(user.getUserId()));
         mmap.put("postGroup", userService.selectUserPostGroup(user.getUserId()));
+        mmap.put("pathUrl", RuoYiConfig.getShowPath());
         return prefix + "/profile";
     }
 

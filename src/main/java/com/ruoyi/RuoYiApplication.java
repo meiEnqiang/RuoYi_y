@@ -4,6 +4,10 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+
+import static org.fusesource.jansi.Ansi.ansi;
 
 /**
  * 启动程序
@@ -18,15 +22,17 @@ public class RuoYiApplication
     {
         // System.setProperty("spring.devtools.restart.enabled", "false");
         SpringApplication.run(RuoYiApplication.class, args);
-        System.out.println("(♥◠‿◠)ﾉﾞ  若依启动成功   ლ(´ڡ`ლ)ﾞ  \n" +
-                " .-------.       ____     __        \n" +
-                " |  _ _   \\      \\   \\   /  /    \n" +
-                " | ( ' )  |       \\  _. /  '       \n" +
-                " |(_ o _) /        _( )_ .'         \n" +
-                " | (_,_).' __  ___(_ o _)'          \n" +
-                " |  |\\ \\  |  ||   |(_,_)'         \n" +
-                " |  | \\ `'   /|   `-'  /           \n" +
-                " |  |  \\    /  \\      /           \n" +
-                " ''-'   `'-'    `-..-'              ");
+        System.out.println(ansi().eraseScreen().render("@|green (♥◠‿◠)ﾉﾞ  若依启动成功   ლ(´ڡ`ლ)ﾞ  \n|@" +
+                "@|red  .-------.       ____     __        \n|@" +
+                "@|green  |  _ _   \\      \\   \\   /  /    \n|@" +
+                "@|yellow  | ( ' )  |       \\  _. /  '       \n|@" +
+                "@|red  |(_ o _) /        _( )_ .'         \n|@" +
+                "@|green  | (_,_).' __  ___(_ o _)'          \n|@" +
+                "@|yellow  |  |\\ \\  |  ||   |(_,_)'         \n|@" +
+                "@|red  |  | \\ `'   /|   `-'  /           \n|@" +
+                "@|green  |  |  \\    /  \\      /           \n|@" +
+                "@|yellow  ''-'   `'-'    `-..-'              |@"));
+
+        System.out.println( ansi().eraseScreen().render("@|red Mei|@" +  "@|green EnQiang|@") );
     }
 }
