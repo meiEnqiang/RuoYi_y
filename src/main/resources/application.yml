@@ -49,7 +49,8 @@ spring:
     time-zone: GMT+8
     date-format: yyyy-MM-dd HH:mm:ss
   profiles: 
-    active: druid
+    active: druid-@profileActive@
+    #active: druid-dev
   #文件上传
   servlet:
      multipart:

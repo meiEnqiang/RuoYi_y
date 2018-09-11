@@ -27,10 +27,11 @@
 <script type="text/javascript">
 $(window).load(function() {
 	var avatar = '[[${user.avatar}]]';
+	var pathUrl = '[[${pathUrl}]]';
     var options = {
         thumbBox: '.thumbBox',
         spinner: '.spinner',
-        imgSrc: $.common.isEmpty(avatar) ? '/img/profile.jpg' : '/profile/' + avatar
+        imgSrc: $.common.isEmpty(avatar) ? @{/img/profile.jpg} : pathUrl + avatar
     }
     var cropper = $('.imageBox').cropbox(options);
     $('#avatar').on('change',
