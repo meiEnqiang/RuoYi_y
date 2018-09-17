@@ -32,7 +32,7 @@ public class PCDataController {
         String error = "";
         if("test".equals(hostID)){
             isTrue = true;
-            error = "测试成功";
+            error = "测试成功！！";
         }else {
             error = "访问失败";
         }
