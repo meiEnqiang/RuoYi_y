@@ -306,7 +306,7 @@
 					<!-- 这个账户和密码是自定义的，和Maven，Tomcat中配置要保持一致-->
 					<username>mei</username>
 					<password>Mei53200</password>
-					<port>8088</port>
+					<port>8080</port>
 					<!-- 若tomcat项目中已存在，且使"mvn tomcat7:deploy"命令必须要设置下面的代码 -->
 					<!-- 更新项目时，仅需要执行"mvn tomcat7:redeploy"命令即可 -->
 					<!-- 上述命令无论服务器是tomcat7、8或9，均是使用"mvn tomcat7:deploy"或"mvn tomcat7:redeploy" -->
@@ -342,7 +342,7 @@
 			<id>test</id>
 			<properties>
 				<profileActive>test</profileActive>
-				<deploy.url>http://10.10.30.168:8088/manager/text</deploy.url>
+				<deploy.url>http://10.10.30.168:8080/manager/text</deploy.url>
 			</properties>
 		</profile>
 	</profiles>
