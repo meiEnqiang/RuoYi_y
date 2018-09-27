@@ -2,7 +2,15 @@ package com.ruoyi.project.system.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.ruoyi.common.redis.CacheNameSpace;
+import com.ruoyi.common.redis.QueryCache;
+import com.ruoyi.common.redis.QueryCacheKey;
+import com.ruoyi.common.redis.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.support.Convert;
@@ -46,6 +54,8 @@ public class UserServiceImpl implements IUserService
 
     @Autowired
     private PasswordService passwordService;
+    @Autowired
+    private RedisService redisService;
 
     /**
      * 根据条件分页查询用户对象
@@ -55,6 +65,7 @@ public class UserServiceImpl implements IUserService
      * @return 用户信息集合信息
      */
     @Override
+    @Cacheable(value = "user", key = "methodName")
     public List<User> selectUserList(User user)
     {
         // 生成数据权限过滤条件
@@ -69,6 +80,7 @@ public class UserServiceImpl implements IUserService
      * @return 用户对象信息
      */
     @Override
+    @Cacheable(value = "user", key = "methodName")
     public User selectUserByLoginName(String userName)
     {
         return userMapper.selectUserByLoginName(userName);
@@ -81,6 +93,7 @@ public class UserServiceImpl implements IUserService
      * @return 用户对象信息
      */
     @Override
+    @Cacheable(value = "user", key = "target")
     public User selectUserByPhoneNumber(String phoneNumber)
     {
         return userMapper.selectUserByPhoneNumber(phoneNumber);
@@ -93,20 +106,21 @@ public class UserServiceImpl implements IUserService
      * @return 用户对象信息
      */
     @Override
+    @Cacheable(value = "user", key = "methodName")
     public User selectUserByEmail(String email)
     {
         return userMapper.selectUserByEmail(email);
     }
 
-    /**
-     * 通过用户ID查询用户
-     * 
-     * @param userId 用户ID
-     * @return 用户对象信息
-     */
+
+    /*@Override
+    @QueryCache(nameSpace = CacheNameSpace.SYS_USER)
+    public User selectUserById(@QueryCacheKey Long userId) {
+        return userMapper.selectUserById(userId);
+    }*/
     @Override
-    public User selectUserById(Long userId)
-    {
+    @Cacheable(value = "user", key = "'user_' + #userId")
+    public User selectUserById(Long userId) {
         return userMapper.selectUserById(userId);
     }
 
@@ -117,6 +131,7 @@ public class UserServiceImpl implements IUserService
      * @return 结果
      */
     @Override
+    @CacheEvict(value = "user",allEntries = true)
     public int deleteUserById(Long userId)
     {
         // 删除用户与角色关联
@@ -133,6 +148,7 @@ public class UserServiceImpl implements IUserService
      * @return 结果
      */
     @Override
+    @CacheEvict(value = "user",allEntries = true)
     public int deleteUserByIds(String ids) throws Exception
     {
         Long[] userIds = Convert.toLongArray(ids);
@@ -153,6 +169,7 @@ public class UserServiceImpl implements IUserService
      * @return 结果
      */
     @Override
+    @CacheEvict(value = "user",allEntries = true)
     public int insertUser(User user)
     {
         user.randomSalt();
@@ -174,6 +191,7 @@ public class UserServiceImpl implements IUserService
      * @return 结果
      */
     @Override
+    @CacheEvict(value = "user",allEntries = true)
     public int updateUser(User user)
     {
         Long userId = user.getUserId();
@@ -196,6 +214,7 @@ public class UserServiceImpl implements IUserService
      * @return 结果
      */
     @Override
+    @CacheEvict(value = "user",allEntries = true)
     public int updateUserInfo(User user)
     {
         return userMapper.updateUser(user);
@@ -208,6 +227,7 @@ public class UserServiceImpl implements IUserService
      * @return 结果
      */
     @Override
+    @CacheEvict(value = "user",allEntries = true)
     public int resetUserPwd(User user)
     {
         user.randomSalt();
@@ -220,6 +240,7 @@ public class UserServiceImpl implements IUserService
      * 
      * @param user 用户对象
      */
+    @CacheEvict(value = "user",allEntries = true)
     public void insertUserRole(User user)
     {
         // 新增用户与角色管理

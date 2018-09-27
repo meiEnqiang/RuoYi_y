@@ -1,16 +1,30 @@
 package com.ruoyi.framework.aspectj;
 
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.ruoyi.common.redis.CacheNameSpace;
+import com.ruoyi.common.redis.QueryCache;
+import com.ruoyi.common.redis.QueryCacheKey;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.Signature;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.core.MethodParameter;
+import org.springframework.core.annotation.SynthesizingMethodParameter;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
+import org.springframework.data.redis.serializer.*;
 import org.springframework.stereotype.Component;
 import com.alibaba.fastjson.JSONObject;
 import com.ruoyi.common.utils.ServletUtils;
@@ -23,6 +37,8 @@ import com.ruoyi.framework.manager.factory.AsyncFactory;
 import com.ruoyi.project.monitor.operlog.domain.OperLog;
 import com.ruoyi.project.system.user.domain.User;
 
+import javax.annotation.Resource;
+
 /**
  * 操作日志记录处理
  * 
@@ -32,12 +48,81 @@ import com.ruoyi.project.system.user.domain.User;
 @Component
 public class LogAspect
 {
+    @Resource
+    private RedisTemplate redisTemplate;
     private static final Logger log = LoggerFactory.getLogger(LogAspect.class);
 
     // 配置织入点
     @Pointcut("@annotation(com.ruoyi.framework.aspectj.lang.annotation.Log)")
     public void logPointCut()
     {
+    }
+    /**
+     * 定义拦截规则：拦截所有@QueryCache注解的方法。
+     */
+    /*@Pointcut("execution(* com.example.service.impl..*(..)) , @annotation(com.example.common.annotation.QueryCache)")
+    public void queryCachePointcut(){}*/
+    @Pointcut("@annotation(com.ruoyi.common.redis.QueryCache)")
+    public void queryCachePointcut(){}
+    /**
+     * 拦截器具体实现
+     * @param pjp
+     * @return
+     * @throws Throwable
+     */
+    @Around("queryCachePointcut()")
+    public Object Interceptor(ProceedingJoinPoint pjp) throws Throwable {
+        long beginTime = System.currentTimeMillis();
+        log.info("AOP 缓存切面处理 >>>> start ");
+        MethodSignature signature = (MethodSignature) pjp.getSignature();
+        Method method = signature.getMethod(); //获取被拦截的方法
+        CacheNameSpace cacheType = method.getAnnotation(QueryCache.class).nameSpace();
+        String key = null;
+        int i = 0;
+
+        // 循环所有的参数
+        for (Object value : pjp.getArgs()) {
+            MethodParameter methodParam = new SynthesizingMethodParameter(method, i);
+            Annotation[] paramAnns = methodParam.getParameterAnnotations();
+
+            // 循环参数上所有的注解
+            for (Annotation paramAnn : paramAnns) {
+                if ( paramAnn instanceof QueryCacheKey) { //
+                    QueryCacheKey requestParam = (QueryCacheKey) paramAnn;
+                    key = cacheType.name() + "_" + value;   // 取到QueryCacheKey的标识参数的值
+                }
+            }
+            i++;
+        }
+
+        // 获取不到key值，抛异常
+        if (StringUtils.isBlank(key)) throw new Exception("缓存key值不存在");
+
+        log.info("获取到缓存key值 >>>> " + key);
+        ValueOperations operations = redisTemplate.opsForValue();
+        boolean hasKey = redisTemplate.hasKey(key);
+        if (hasKey) {
+            // 缓存中获取到数据，直接返回。
+            Object object = operations.get(key);
+            log.info("从缓存中获取到数据 >>>> " + object.toString());
+            log.info("AOP 缓存切面处理 >>>> end 耗时：" + (System.currentTimeMillis() - beginTime));
+            return object;
+        }
+
+        // 缓存中没有数据，调用原始方法查询数据库
+        Object object = pjp.proceed();
+        /*StringRedisSerializer stringRedisSerializer = new StringRedisSerializer();
+        Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
+        redisTemplate.setValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.setKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashKeySerializer(stringRedisSerializer);
+        redisTemplate.setHashValueSerializer(jackson2JsonRedisSerializer);
+        redisTemplate.afterPropertiesSet();*/
+        operations.set(key, object, 30, TimeUnit.MINUTES); // 设置超时时间30分钟
+
+        log.info("DB取到数据并存入缓存 >>>> " + object.toString());
+        log.info("AOP 缓存切面处理 >>>> end 耗时：" + (System.currentTimeMillis() - beginTime));
+        return object;
     }
 
     /**

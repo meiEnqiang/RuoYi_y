@@ -59,6 +59,26 @@ spring:
     restart:
       #热部署开关
       enabled: true
+  #redis
+  application:
+    name: spring-boot-redis
+  cache:
+    redis:
+      use-key-prefix: true
+      cache-null-values: false
+      time-to-live: 30m
+  redis:
+    host: 10.10.30.168
+    port: 6379
+    password: Mei53200
+    timeout: 20000
+    jedis:
+      pool:
+        max-active: 8
+        min-idle: 0
+        max-idle: 8
+        max-wait: -1
+
 # MyBatis
 mybatis:
     # 搜索指定包别名
@@ -120,3 +140,4 @@ gen:
   autoRemovePre: true
   # 表前缀(类名不会包含表前缀)
   tablePrefix: sys_
+

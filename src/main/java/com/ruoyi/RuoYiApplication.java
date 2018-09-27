@@ -4,6 +4,7 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.cache.annotation.EnableCaching;
 
 import static org.fusesource.jansi.Ansi.ansi;
 
@@ -14,6 +15,7 @@ import static org.fusesource.jansi.Ansi.ansi;
  */
 @SpringBootApplication(exclude = { DataSourceAutoConfiguration.class })
 @MapperScan("com.ruoyi.project.*.*.mapper")
+@EnableCaching
 public class RuoYiApplication
 {
     public static void main(String[] args)
