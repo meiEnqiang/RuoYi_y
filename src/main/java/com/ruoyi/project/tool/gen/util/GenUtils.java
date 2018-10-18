@@ -19,13 +19,13 @@ import com.ruoyi.project.tool.gen.domain.TableInfo;
 public class GenUtils
 {
     /** 项目空间路径 */
-    private static final String PROJECT_PATH = "main/java/com/ruoyi/project";
+    private static final String PROJECT_PATH = "src/main/java/com/ruoyi/project";
 
     /** mybatis空间路径 */
-    private static final String MYBATIS_PATH = "main/resources/mybatis";
+    private static final String MYBATIS_PATH = "src/main/resources/mybatis";
 
     /** html空间路径 */
-    private static final String TEMPLATES_PATH = "main/resources/templates";
+    private static final String TEMPLATES_PATH = "src/main/resources/templates";
 
     /**
      * 设置列信息
@@ -172,7 +172,7 @@ public class GenUtils
         }
         if (template.contains("sql.vm"))
         {
-            return classname + "Menu.sql";
+            return "sql/" + classname + "Menu.sql";
         }
         return null;
     }

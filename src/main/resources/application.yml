@@ -59,9 +59,6 @@ spring:
     restart:
       #热部署开关
       enabled: true
-  #redis
-  application:
-    name: spring-boot-redis
   cache:
     redis:
       use-key-prefix: true
@@ -78,7 +75,19 @@ spring:
         min-idle: 0
         max-idle: 8
         max-wait: -1
-
+  rabbitmq:
+    host: 10.10.30.168
+    port: 5672
+    username: mei
+    password: Mei53200
+  mail:
+    host: smtp.163.com
+    username: m17683837392@163.com
+    password: Mei3993859
+    default-encoding: utf-8
+mail:
+  fromMail:
+    addr: m17683837392@163.com
 # MyBatis
 mybatis:
     # 搜索指定包别名

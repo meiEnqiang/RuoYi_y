@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+    <style type="text/css">
+        body {
+            font-size: 14px;
+            line-height: 1.5
+        }
+
+        .dd, .dd tr th, .dd tr td {
+            border: 1px solid #000000;
+        }
+    </style>
+</head>
+<body>
+<table>
+    <tr>
+        <td>
+            <table width="100%">
+                <tr>
+                    <th th:text="${headline}" bgcolor="#FF8E00" align="left"
+                        style="font-family:'lucida grande',tahoma,'bitstream vera sans',helvetica,sans-serif;color:#FFF;font-size:16px;font-weight:bold;padding:4px">
+                    </th>
+                </tr>
+                <tr>
+                    <td bgcolor="#FF8E00">
+                        <table width="100%" class="dd" cellspacing="0" bgcolor="#FFFFFF">
+                            <tr align="center">
+                                <th>序号</th>
+                                <th:block th:each="title : ${titleList}">
+                                    <th th:text="${title}"></th>
+                                </th:block>
+                            </tr>
+                            <th:block th:each="result,iterStat : ${resultList}">
+                                <tr align="center">
+                                    <td th:text="${iterStat.count}"></td>
+                                    <th:block th:each="str : ${iterStat.current}">
+                                        <td th:text="${str}"></td>
+                                    </th:block>
+                                </tr>
+                            </th:block>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+
+</html>

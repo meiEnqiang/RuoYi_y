@@ -61,3 +61,8 @@ spring:
                 wall:
                     config:
                         multi-statement-allow: true
+    jpa:
+        database: mysql
+        show-sql: true
+        hibernate:
+            ddl-auto: update

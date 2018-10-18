@@ -33,6 +33,6 @@ public class RuoYiApplication
                 "@|green  |  |  \\    /  \\      /           \n|@" +
                 "@|yellow  ''-'   `'-'    `-..-'              |@"));
 
-        System.out.println( ansi().eraseScreen().render("@|red Mei|@" +  "@|green EnQiang|@") );
+        System.out.println( ansi().eraseScreen().render("@|red Mei |@" +  "@|green En |@" + "@|yellow Qiang |@") );
     }
 }

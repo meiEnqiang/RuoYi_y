@@ -69,7 +69,7 @@
 
 	<logger name="com.ruoyi" level="info" />
 
-	<root level="info">
+	<root level="error">
 		<appender-ref ref="console" />
 	</root>
 	
