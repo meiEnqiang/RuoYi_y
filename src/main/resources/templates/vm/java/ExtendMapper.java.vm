@@ -1,0 +1,32 @@
+package ${package}.mapper;
+
+import com.ruoyi.entity.${className};
+import com.ruoyi.mapper.${className}Mapper;
+
+import java.util.List;
+
+/**
+ * ${tableComment} 数据层
+ * 
+ * @author ${author}
+ * @date ${datetime}
+ */
+public interface ${className}ExtendMapper extends ${className}Mapper{
+
+	/**
+     * 查询${tableComment}列表
+     * 
+     * @param ${classname} ${tableComment}信息
+     * @return ${tableComment}集合
+     */
+	List<${className}> select${className}List(${className} ${classname});
+
+	/**
+     * 批量删除${tableComment}
+     * 
+     * @param ${primaryKey.attrname}s 需要删除的数据ID
+     * @return 结果
+     */
+	int delete${className}ByIds(String[] ${primaryKey.attrname}s);
+	
+}

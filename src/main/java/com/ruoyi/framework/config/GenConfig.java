@@ -20,6 +20,9 @@ public class GenConfig
     public static String autoRemovePre;
     /** 表前缀(类名不会包含表前缀) */
     public static String tablePrefix;
+    /** 本地生成代码的路劲 */
+    public static String codePath;
+
 
     public static String getAuthor()
     {
@@ -59,6 +62,15 @@ public class GenConfig
     public void setTablePrefix(String tablePrefix)
     {
         GenConfig.tablePrefix = tablePrefix;
+    }
+    public static String getCodePath()
+    {
+        return codePath;
+    }
+
+    public void setCodePath(String codePath)
+    {
+        GenConfig.codePath = codePath;
     }
 
     @Override

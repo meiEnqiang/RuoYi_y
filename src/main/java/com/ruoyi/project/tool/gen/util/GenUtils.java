@@ -81,8 +81,9 @@ public class GenUtils
     public static List<String> getTemplates()
     {
         List<String> templates = new ArrayList<String>();
-        templates.add("templates/vm/java/domain.java.vm");
-        templates.add("templates/vm/java/Mapper.java.vm");
+        //templates.add("templates/vm/java/domain.java.vm");
+        //templates.add("templates/vm/java/Mapper.java.vm");
+        templates.add("templates/vm/java/ExtendMapper.java.vm");
         templates.add("templates/vm/java/Service.java.vm");
         templates.add("templates/vm/java/ServiceImpl.java.vm");
         templates.add("templates/vm/java/Controller.java.vm");
@@ -103,10 +104,14 @@ public class GenUtils
         {
             tableName = tableName.substring(tableName.indexOf("_") + 1);
         }
-        if (StringUtils.isNotEmpty(GenConfig.getTablePrefix()))
+        /*if (StringUtils.isNotEmpty(GenConfig.getTablePrefix()))
         {
-            tableName = tableName.replace(GenConfig.getTablePrefix(), "");
-        }
+            String tablePrefix = GenConfig.getTablePrefix();
+            String [] strs = StringUtils.split(tablePrefix,",");
+            for(String str : strs){
+                tableName = tableName.replace(str, "");
+            }
+        }*/
         return StringUtils.convertToCamelCase(tableName);
     }
 
@@ -133,9 +138,13 @@ public class GenUtils
             return javaPath + "domain" + "/" + className + ".java";
         }
 
-        if (template.contains("Mapper.java.vm"))
+        /*if (template.contains("Mapper.java.vm"))
         {
             return javaPath + "mapper" + "/" + className + "Mapper.java";
+        }*/
+        if (template.contains("ExtendMapper.java.vm"))
+        {
+            return javaPath + "mapper" + "/" + className + "ExtendMapper.java";
         }
 
         if (template.contains("Service.java.vm"))
@@ -155,7 +164,7 @@ public class GenUtils
 
         if (template.contains("Mapper.xml.vm"))
         {
-            return mybatisPath + "Mapper.xml";
+            return mybatisPath + "ExtendMapper.xml";
         }
 
         if (template.contains("list.html.vm"))

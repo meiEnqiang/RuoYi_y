@@ -13,7 +13,7 @@ ruoyi:
 #开发环境配置
 server:
   #服务端口
-  port: 80
+  port: 8088
   servlet:
     # 项目contextPath
     context-path: /
@@ -142,11 +142,13 @@ xss:
 # 代码生成
 gen: 
   # 作者
-  author: ruoyi
+  author: MeiEQ
+  #本地生成代码的路径
+  codePath: D:/code/RuoYi_y/
   # 默认生成包路径 module 需改成自己的模块名称 如 system monitor tool
   packageName: com.ruoyi.project.module
   # 自动去除表前缀，默认是true
   autoRemovePre: true
   # 表前缀(类名不会包含表前缀)
-  tablePrefix: sys_
+  tablePrefix: sys_,t_
 

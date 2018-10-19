@@ -122,28 +122,29 @@ public class GenServiceImpl implements IGenService
             {
                 String fileName = GenUtils.getFileName(template, table, moduleName);
                 //写到项目里去
-                //File file = new File("D:\\code\\RuoYi_y\\" + fileName);
-                File file = new File("C:\\Users\\Administrator\\Desktop\\工作\\code\\RuoYi_y\\" + fileName);
-                // 如果当前文件父目录不存在，则创建
-                if (!file.getParentFile().exists()) {
-                    file.getParentFile().mkdirs();
-                }
-                // 如果当前文件已经存在着不创建这个文件
-                if (file.exists()) {
-                    continue;
-                }
-                System.out.println("path:" + "D:\\code\\RuoYi_y\\" + fileName);
-                FileOutputStream outputStream = new FileOutputStream(file);
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(outputStream, Constants.UTF8));
-                tpl.merge(context,writer);
+                String codePath = GenConfig.getCodePath();
+                File file = new File(codePath);
+                if(file.exists()){
+                    file = new File(codePath + fileName);
+                    // 如果当前文件父目录不存在，则创建
+                    if (!file.getParentFile().exists()) {
+                        file.getParentFile().mkdirs();
+                    }
+                    // 如果当前文件已经存在着不创建这个文件
+                    if (!file.exists()) {
+                        System.out.println("path:" + "D:\\code\\RuoYi_y\\" + fileName);
+                        FileOutputStream outputStream = new FileOutputStream(file);
+                        BufferedWriter writer = new BufferedWriter(
+                                new OutputStreamWriter(outputStream, Constants.UTF8));
+                        tpl.merge(context,writer);
+                        writer.flush();
+                        writer.close();
+                    }
 
+                }
                 // 添加到zip
                 zip.putNextEntry(new ZipEntry(fileName));
                 IOUtils.write(sw.toString(), zip, Constants.UTF8);
-
-                writer.flush();
-                writer.close();
                 IOUtils.closeQuietly(sw);
                 zip.closeEntry();
             }
