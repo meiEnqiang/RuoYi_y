@@ -15,7 +15,6 @@ public class FastDFSServiceImpl implements FastDFSService {
     @Override
     public FastDFSFile saveFile(MultipartFile multipartFile) {
         try {
-            String[] fileAbsolutePath={};
             String fileName=multipartFile.getOriginalFilename();
             assert fileName != null;
             String ext = fileName.substring(fileName.lastIndexOf(".") + 1);
@@ -26,12 +25,22 @@ public class FastDFSServiceImpl implements FastDFSService {
                 fileBuff = new byte[len1];
                 inputStream.read(fileBuff);
             }
+            assert inputStream != null;
             inputStream.close();
             FastDFSFile file = new FastDFSFile(fileName, fileBuff, ext);
             return FastDFSClient.upload(file);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
+        }
+    }
+
+    @Override
+    public void deleteFile(FastDFSFile fastDFSFile) {
+        try {
+            FastDFSClient.deleteFile(fastDFSFile.getFileGroup(),fastDFSFile.getRemoteFileName());
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

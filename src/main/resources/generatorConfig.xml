@@ -53,7 +53,7 @@
         </javaClientGenerator>
 
         <!--生成对应表及类名-->
-        <table tableName="t_test_generator" domainObjectName="TestGenerator">
+        <table tableName="t_file_manage" domainObjectName="FileManage">
             <generatedKey column="id" sqlStatement="mysql" identity="true"></generatedKey>
         </table>
 

@@ -8,4 +8,5 @@ import org.springframework.web.multipart.MultipartFile;
  */
 public interface FastDFSService {
     FastDFSFile saveFile(MultipartFile multipartFile);
+    void deleteFile(FastDFSFile fastDFSFile);
 }

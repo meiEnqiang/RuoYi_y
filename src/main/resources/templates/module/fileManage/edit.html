@@ -1,0 +1,101 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-fileManage-edit" th:object="${fileManage}" enctype="multipart/form-data">
+            <input id="fileId" name="fileId" th:field="*{fileId}"  type="hidden">
+            <input id="filePath" name="filePath" th:field="*{filePath}"  type="hidden">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">文件名称：</label>
+                <div class="col-sm-8">
+                    <input id="fileName" name="fileName" th:field="*{fileName}" class="form-control" type="text">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">文件类型：</label>
+                <div class="col-sm-8">
+                    <select id="fileType" class="form-control m-b" name="fileType" th:with="fileType=${@dict.getType('t_file_type')}">
+                        <option th:each="dict : ${fileType}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"th:field="*{fileType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">上传文件：</label>
+                <div class="col-sm-8">
+                    <input id="file" name="file" class="form-control" type="file">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">备注：</label>
+                <div class="col-sm-8">
+                    <input id="remark" name="remark" th:field="*{remark}" class="form-control" type="text">
+                </div>
+            </div>
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-9">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script type="text/javascript">
+        var prefix = ctx + "module/fileManage";
+        $("#form-fileManage-edit").validate({
+            rules:{
+                fileName:{
+                    required:true,
+                    remote: {
+                        url: prefix + "/checkFileNameUnique",
+                        type: "post",
+                        dataType: "json",
+                        data: {
+                            "fileId": function() {
+                                return $.common.trim($("#fileId").val());
+                            },
+                            "fileName" : function() {
+                                return $.common.trim($("#fileName").val());
+                            }
+                        },
+                        dataFilter: function(data, type) {
+                            return $.validate.unique(data);
+                        }
+                    }
+                }
+            },
+            messages: {
+                "fileName": {
+                    remote: "文件名称已经存在！"
+                }
+            },
+            submitHandler: function(form) {
+                var f = $('#file').val();
+                if(f == '' || f == null){
+                    $.operate.save(prefix + "/edit", $('#form-fileManage-edit').serialize());
+                }else {
+                    var formData = new FormData();
+                    formData.append('file', $('#file')[0].files[0]);
+                    formData.append("fileName", $("#fileName").val());
+                    formData.append("fileType", $("#fileType").val());
+                    formData.append("remark", $("#remark").val());
+                    formData.append("fileId", $("#fileId").val());
+                    formData.append("filePath", $("#filePath").val());
+                    $.ajax({
+                        url: prefix + "/edit",
+                        data: formData,
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        success: function(result) {
+                            $.operate.saveSuccess(result);
+                        }
+                    })
+                }
+            }
+        });
+    </script>
+</body>
+</html>

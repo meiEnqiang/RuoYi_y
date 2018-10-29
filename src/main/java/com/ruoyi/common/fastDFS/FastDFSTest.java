@@ -56,7 +56,10 @@ public class FastDFSTest {
     }
     @Test
     public void deleFile() throws Exception{
-        FastDFSClient.deleteFile("group1","M00/00/00/CgoeqFvEM1WAQ_2LAAAITMFiDjY457.txt");
+        FastDFSClient.deleteFile("group1","M00/00/00/CgoeqFvS2BWAJBhPAAAITMFiDjY145.txt");
+        FastDFSClient.deleteFile("group1","M00/00/00/CgoeqFvS2EaAdmhsAABfq-2cD6Q05.docx");
+        FastDFSClient.deleteFile("group1","M00/00/00/CgoeqFvWYueAcqtmAABFDpamt7M19.xlsx");
+        FastDFSClient.deleteFile("group1","M00/00/00/CgoeqFvWYwWAHNBKAAABDNPNLK0246.txt");
     }
 
 }

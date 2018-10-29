@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.module.fileManage.mapper.FileManageExtendMapper">
+    
+    <resultMap type="com.ruoyi.entity.FileManage" id="FileManageResult">
+        <result property="fileId"    column="file_id"    />
+        <result property="fileName"    column="file_name"    />
+        <result property="fileType"    column="file_type"    />
+        <result property="delFlag"    column="del_flag"    />
+        <result property="createBy"    column="create_by"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateBy"    column="update_by"    />
+        <result property="updateTime"    column="update_time"    />
+        <result property="remark"    column="remark"    />
+        <result property="filePath"    column="file_path"    />
+    </resultMap>
+	
+	<sql id="selectFileManageVo">
+        select file_id, file_name, file_type, del_flag, create_by, create_time, update_by, update_time, remark, file_path from t_file_manage
+    </sql>
+	
+    <select id="selectFileManageList" parameterType="com.ruoyi.entity.FileManage" resultMap="FileManageResult">
+        <include refid="selectFileManageVo"/>
+        <where>  
+            <if test="fileId != null"> and file_id = #{fileId}</if>
+             <if test="fileName != null"> and file_name = #{fileName}</if>
+             <if test="fileType != null"> and file_type = #{fileType}</if>
+             <if test="delFlag != null"> and del_flag = #{delFlag}</if>
+             <if test="createBy != null"> and create_by = #{createBy}</if>
+             <if test="createTime != null"> and create_time = #{createTime}</if>
+             <if test="updateBy != null"> and update_by = #{updateBy}</if>
+             <if test="updateTime != null"> and update_time = #{updateTime}</if>
+             <if test="remark != null"> and remark = #{remark}</if>
+             <if test="filePath != null"> and filePath = #{filePath}</if>
+         </where>
+    </select>
+    
+    <delete id="deleteFileManageByIds" parameterType="String">
+        delete from t_file_manage where file_id in 
+        <foreach item="fileId" collection="array" open="(" separator="," close=")">
+            #{fileId}
+        </foreach>
+    </delete>
+    
+</mapper>
