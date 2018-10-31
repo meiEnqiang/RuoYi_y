@@ -11,7 +11,7 @@ import java.util.List;
  * @author MeiEQ
  * @date 2018-10-19
  */
-public interface TestGeneratorExtendMapper extends TestGeneratorMapper{
+public interface TestGeneratorExtendMapper extends TestGeneratorMapper {
 
 	/**
      * 查询测试列表
@@ -28,5 +28,4 @@ public interface TestGeneratorExtendMapper extends TestGeneratorMapper{
      * @return 结果
      */
 	int deleteTestGeneratorByIds(String[] ids);
-	
 }

@@ -19,6 +19,6 @@ public class MailReceiver {
     private MailService mailService;
     @RabbitHandler
     public void process(MailParameters mailParameters) {
-        mailService.sendAttachmentsMail(mailParameters.getTo(),mailParameters.getSubject(),mailParameters.getContent(),mailParameters.getFilePaths());
+        mailService.sendAttachmentsMail(mailParameters);
     }
 }

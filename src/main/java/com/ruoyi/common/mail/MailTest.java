@@ -93,7 +93,7 @@ public class MailTest {
         mailService.sendSimpleMail("m17683837392@163.com", "模板邮件测试", emailContent);
         //List<String> filePaths = Lists.newArrayList("D:\\gif\\11.jpg","C:\\Users\\Administrator\\Desktop\\工作\\定位监测系统接口文档.docx");
         List<String> filePaths = Lists.newArrayList("D:\\gif\\11.jpg","D:\\gif\\test4.jpg","C:\\Users\\Administrator\\Desktop\\工作\\定位监测系统接口文档.docx");
-        mailService.sendAttachmentsMail("m17683837392@163.com", "邮件测试", emailContent,filePaths);
+        //mailService.sendAttachmentsMail("m17683837392@163.com", "邮件测试", emailContent,filePaths);
         //helloSender.sendMail("m17683837392@163.com","邮件测试",emailContent,filePaths);
     }
 }

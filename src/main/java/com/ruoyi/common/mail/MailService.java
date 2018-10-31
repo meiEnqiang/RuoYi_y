@@ -9,5 +9,7 @@ import java.util.List;
 public interface MailService {
     void sendSimpleMail(String to, String subject, String content);
 
-    void sendAttachmentsMail(String to, String subject, String content, List<String> filePaths);
+    void sendSimpleTemplateMail(String to, String subject, SimpleTemplateParameters parameters);
+
+    void sendAttachmentsMail(MailParameters mailParameters);
 }

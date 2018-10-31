@@ -13,6 +13,7 @@ import java.util.List;
 public class MailParameters implements Serializable {
     private String to;
     private String subject;
-    private String content;
+    private String content = "";
     private List<String> filePaths;
+    private SimpleTemplateParameters parameters;
 }

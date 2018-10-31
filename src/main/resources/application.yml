@@ -88,6 +88,7 @@ spring:
 mail:
   fromMail:
     addr: m17683837392@163.com
+    fromName: 梅式系统邮件
 # MyBatis
 mybatis:
     # 搜索指定包别名

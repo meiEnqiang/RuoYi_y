@@ -24,16 +24,18 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id="selectFileManageList" parameterType="com.ruoyi.entity.FileManage" resultMap="FileManageResult">
         <include refid="selectFileManageVo"/>
         <where>  
-            <if test="fileId != null"> and file_id = #{fileId}</if>
-             <if test="fileName != null"> and file_name = #{fileName}</if>
+             <if test="fileName != null"> and file_name like CONCAT('%',#{fileName},'%') </if>
              <if test="fileType != null"> and file_type = #{fileType}</if>
-             <if test="delFlag != null"> and del_flag = #{delFlag}</if>
              <if test="createBy != null"> and create_by = #{createBy}</if>
-             <if test="createTime != null"> and create_time = #{createTime}</if>
              <if test="updateBy != null"> and update_by = #{updateBy}</if>
-             <if test="updateTime != null"> and update_time = #{updateTime}</if>
-             <if test="remark != null"> and remark = #{remark}</if>
-             <if test="filePath != null"> and filePath = #{filePath}</if>
+            <if test="params.beginTime != null and params.beginTime != ''"><!-- 开始时间检索 -->
+                and date_format(create_time,'%y%m%d') &gt;= date_format(#{params.beginTime},'%y%m%d')
+            </if>
+            <if test="params.endTime != null and params.endTime != ''"><!-- 结束时间检索 -->
+                and date_format(create_time,'%y%m%d') &lt;= date_format(#{params.endTime},'%y%m%d')
+            </if>
+            <!-- 数据范围过滤 -->
+            ${params.dataScope}
          </where>
     </select>
     

@@ -3,11 +3,14 @@ package com.ruoyi.project.module.testGenerator.service;
 import java.util.List;
 import com.ruoyi.entity.TestGenerator;
 import com.ruoyi.entity.TestGeneratorExample;
+import com.ruoyi.project.module.testGenerator.repository.TestGeneratorRepository;
+import com.ruoyi.project.test.student.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.module.testGenerator.mapper.TestGeneratorExtendMapper;
 import com.ruoyi.project.module.testGenerator.service.ITestGeneratorService;
 import com.ruoyi.common.support.Convert;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * 测试 服务层实现
@@ -20,6 +23,8 @@ public class TestGeneratorServiceImpl implements ITestGeneratorService
 {
 	@Autowired
 	private TestGeneratorExtendMapper testGeneratorMapper;
+	@Autowired
+	private TestGeneratorRepository testGeneratorRepository;
 
 	/**
      * 查询测试信息
@@ -42,10 +47,6 @@ public class TestGeneratorServiceImpl implements ITestGeneratorService
 	@Override
 	public List<TestGenerator> selectTestGeneratorList(TestGenerator testGenerator)
 	{
-		/*TestGeneratorExample example = new TestGeneratorExample();
-		example.createCriteria().andCreateByLike(testGenerator.getCreateBy());
-		example.setOrderByClause("id desc");
-		testGeneratorMapper.selectByExample(example);*/
 	    return testGeneratorMapper.selectTestGeneratorList(testGenerator);
 	}
 	
@@ -80,9 +81,11 @@ public class TestGeneratorServiceImpl implements ITestGeneratorService
      * @return 结果
      */
 	@Override
+	@Transactional(rollbackFor = Exception.class)
 	public int deleteTestGeneratorByIds(String ids)
 	{
-		return testGeneratorMapper.deleteTestGeneratorByIds(Convert.toStrArray(ids));
+		//int i = testGeneratorMapper.deleteTestGeneratorByIds(Convert.toStrArray(ids));
+		return testGeneratorRepository.deleteAllByIdIn(Convert.toIntArray(ids));
 	}
 	
 }

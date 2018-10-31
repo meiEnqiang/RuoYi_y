@@ -11,6 +11,7 @@ import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.entity.FileManage;
 import com.ruoyi.entity.FileManageExample;
+import com.ruoyi.framework.datascope.DataScopeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ruoyi.project.module.fileManage.mapper.FileManageExtendMapper;
@@ -53,6 +54,7 @@ public class FileManageServiceImpl implements IFileManageService
 	@Override
 	public List<FileManage> selectFileManageList(FileManage fileManage)
 	{
+		fileManage.getParams().put("dataScope", DataScopeUtils.dataScopeFilter());
 	    return fileManageMapper.selectFileManageList(fileManage);
 	}
 	
