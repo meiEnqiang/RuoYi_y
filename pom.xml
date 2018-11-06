@@ -405,7 +405,7 @@
 			<id>prod</id>
 			<properties>
 				<profileActive>prod</profileActive>
-				<deploy.url>http://60.205.176.246:8080/manager/text</deploy.url>
+				<deploy.url>http://106.14.126.108:8080/manager/text</deploy.url>
 			</properties>
 		</profile>
 		<profile>

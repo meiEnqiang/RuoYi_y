@@ -59,32 +59,16 @@ spring:
     restart:
       #热部署开关
       enabled: true
-  cache:
-    redis:
-      use-key-prefix: true
-      cache-null-values: false
-      time-to-live: 30m
-  redis:
-    host: 10.10.30.168
-    port: 6379
-    password: Mei53200
-    timeout: 20000
-    jedis:
-      pool:
-        max-active: 8
-        min-idle: 0
-        max-idle: 8
-        max-wait: -1
-  rabbitmq:
-    host: 10.10.30.168
-    port: 5672
-    username: mei
-    password: Mei53200
   mail:
     host: smtp.163.com
     username: m17683837392@163.com
     password: Mei3993859
     default-encoding: utf-8
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
 mail:
   fromMail:
     addr: m17683837392@163.com

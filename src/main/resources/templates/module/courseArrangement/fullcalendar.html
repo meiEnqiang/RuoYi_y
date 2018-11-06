@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org" xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+    <meta charset='utf-8' />
+    <link th:href='@{/ajax/libs/fullcalendar/fullcalendar.min.css}' rel='stylesheet' />
+    <link th:href='@{/ajax/libs/fullcalendar/fullcalendar.print.min.css}' rel='stylesheet'
+          media='print' />
+    <script th:src='@{/ajax/libs/fullcalendar/lib/moment.min.js}'></script>
+    <script th:src='@{/ajax/libs/fullcalendar/lib/jquery.min.js}'></script>
+    <script th:src='@{/ajax/libs/fullcalendar/fullcalendar.min.js}'></script>
+    <script th:src='@{/ajax/libs/fullcalendar/locale-all.js}'></script>
+    <script type="text/javascript" th:inline="javascript">
+
+        $(document).ready(function() {
+            var str = [[${list}]];
+            var events = [];
+            str.forEach(function(value,i){
+                events.push({
+                    title: value.course + '(' + value.grade + ")",
+                    borderColor : value.borderColor,
+                    textColor : '#0F0B0C',
+                    backgroundColor: value.backgroundColor,
+                    start: value.start,
+                    end: value.end
+                });
+            });
+            /*events.push({
+                title: '测试',
+                textColor : '#03A9F4',
+                borderColor : '#000000',
+                backgroundColor: 'yellow',
+                start: '2018-03-07 14:00:00',
+                end: '2018-03-07 16:00:00'
+            });*/
+
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                //defaultDate: '2018-03-12',
+                locale: 'zh-cn',
+                navLinks: true, // can click day/week names to navigate views
+                selectable: true,
+                selectHelper: true,
+                select: function(start, end) {
+                    $("#addObjcectInputModalAdd").show();
+                    var title = prompt('Event Title:');
+                    var eventData;
+                    if (title) {
+                        eventData = {
+                            title: title,
+                            start: start,
+                            end: end
+                        };
+                        $('#calendar').fullCalendar('renderEvent', eventData, true); // stick? = true
+                    }
+                    $('#calendar').fullCalendar('unselect');
+                },
+                editable: true,
+                eventLimit: true, // allow "more" link when too many events
+                events: events
+            });
+
+        });
+
+    </script>
+    <style>
+
+        body {
+            margin: 40px 10px;
+            padding: 0;
+            font-family: "Lucida Grande",Helvetica,Arial,Verdana,sans-serif;
+            font-size: 14px;
+        }
+
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+    </style>
+</head>
+<body>
+
+<div id='calendar'></div>
+
+<div class="modal fade" style="display: none" id="addObjcectInputModalAdd" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content" style="width: 45%;border:1px solid;margin: 42%;">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+                <h4 class="modal-title"><i class="fa fa-info-circle"></i>新建课程</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group" style="margin: 2px; margin-bottom: 20px">
+                    <div class="input-group" style="width:100%;line-height: 3; ">
+                        <p>
+                            选择班级：<span id="classListInfoAdd"></span>
+                        </p>
+                        <p>
+                            开始时间：<input type="time" id="startTimeAdd" />
+                        </p>
+                        <p>
+                            结束时间：<input type="time" id="endTimeAdd" />
+                        </p>
+                        <p>
+                            <input type="button" class="btn btn-xs btn-secondary" id="cancelAdd" value="取 消">
+                            <input type="button" class="btn btn-xs btn-success" id="determineAdd" value="确 定">
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

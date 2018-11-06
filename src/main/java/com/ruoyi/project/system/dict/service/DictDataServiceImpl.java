@@ -1,12 +1,13 @@
 package com.ruoyi.project.system.dict.service;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.common.utils.security.ShiroUtils;
 import com.ruoyi.project.system.dict.domain.DictData;
 import com.ruoyi.project.system.dict.mapper.DictDataMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 字典 业务层处理
@@ -66,6 +67,24 @@ public class DictDataServiceImpl implements IDictDataService
     public DictData selectDictDataById(Long dictCode)
     {
         return dictDataMapper.selectDictDataById(dictCode);
+    }
+    /**
+     * 根据字典数据类型和值查询信息
+     *
+     * @param dictType 字典数据类型
+     * @param dictValue 字典数据对应值
+     * @return 字典数据
+     */
+    @Override
+    public DictData getDictDataByDictTypeAndDictValue(String dictType, String dictValue){
+        DictData dictData = new DictData();
+        dictData.setDictType(dictType);
+        dictData.setDictValue(dictValue);
+        List<DictData> list = selectDictDataList(dictData);
+        if(list.size() > 0){
+            return list.get(0);
+        }
+        return null;
     }
 
     /**

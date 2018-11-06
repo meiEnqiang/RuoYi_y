@@ -1,23 +1,21 @@
 package com.ruoyi.project.module.testGenerator.controller;
 
-import java.util.List;
+import com.ruoyi.entity.TestGenerator;
+import com.ruoyi.framework.aspectj.lang.annotation.Log;
+import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
+import com.ruoyi.framework.web.controller.BaseController;
+import com.ruoyi.framework.web.domain.AjaxResult;
+import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.module.courseArrangement.service.ICourseArrangementService;
+import com.ruoyi.project.module.testGenerator.service.ITestGeneratorService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import com.ruoyi.framework.aspectj.lang.annotation.Log;
-import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
-import com.ruoyi.entity.TestGenerator;
-import com.ruoyi.project.module.testGenerator.service.ITestGeneratorService;
-import com.ruoyi.framework.web.controller.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.framework.web.domain.AjaxResult;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 测试 信息操作处理
@@ -33,12 +31,16 @@ public class TestGeneratorController extends BaseController
 	
 	@Autowired
 	private ITestGeneratorService testGeneratorService;
-	
+	@Autowired
+	private ICourseArrangementService courseArrangementService;
+
 	@RequiresPermissions("module:testGenerator:view")
 	@GetMapping()
-	public String testGenerator()
+	public String testGenerator(ModelMap mMap)
 	{
-	    return prefix + "/testGenerator";
+	    //return prefix + "/testGenerator";
+		mMap.addAttribute("list",courseArrangementService.getCourseArrangementSuperList());
+	    return prefix + "/fullcalendar";
 	}
 	
 	/**

@@ -1,12 +1,10 @@
 package com.ruoyi.project.module.testGenerator.repository;
 
 import com.ruoyi.entity.TestGenerator;
-import com.ruoyi.project.test.student.domain.Student;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collection;
 import java.util.List;
 
 /**

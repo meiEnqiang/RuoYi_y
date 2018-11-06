@@ -1,16 +1,14 @@
 package com.ruoyi.project.module.testGenerator.service;
 
-import java.util.List;
+import com.ruoyi.common.support.Convert;
 import com.ruoyi.entity.TestGenerator;
-import com.ruoyi.entity.TestGeneratorExample;
+import com.ruoyi.project.module.testGenerator.mapper.TestGeneratorExtendMapper;
 import com.ruoyi.project.module.testGenerator.repository.TestGeneratorRepository;
-import com.ruoyi.project.test.student.domain.Student;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.ruoyi.project.module.testGenerator.mapper.TestGeneratorExtendMapper;
-import com.ruoyi.project.module.testGenerator.service.ITestGeneratorService;
-import com.ruoyi.common.support.Convert;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 /**
  * 测试 服务层实现

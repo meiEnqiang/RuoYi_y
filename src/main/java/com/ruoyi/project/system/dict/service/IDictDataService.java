@@ -1,7 +1,8 @@
 package com.ruoyi.project.system.dict.service;
 
-import java.util.List;
 import com.ruoyi.project.system.dict.domain.DictData;
+
+import java.util.List;
 
 /**
  * 字典 业务层
@@ -43,6 +44,14 @@ public interface IDictDataService
      * @return 字典数据
      */
     public DictData selectDictDataById(Long dictCode);
+    /**
+     * 根据字典数据类型和值查询信息
+     *
+     * @param dictType 字典数据类型
+     * @param dictValue 字典数据对应值
+     * @return 字典数据
+     */
+    DictData getDictDataByDictTypeAndDictValue(String dictType, String dictValue);
 
     /**
      * 通过字典ID删除字典数据信息
