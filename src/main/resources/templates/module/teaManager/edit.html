@@ -1,0 +1,72 @@
+<!DOCTYPE HTML>
+<html  lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<body class="white-bg">
+    <div class="wrapper wrapper-content animated fadeInRight ibox-content">
+        <form class="form-horizontal m" id="form-teaManager-edit" th:object="${teaManager}">
+            <input id="teaManagerId" name="teaManagerId" th:field="*{teaManagerId}"  type="hidden">
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">教师：</label>
+                <div class="col-sm-8">
+                    <select id="teaId" name="teaId" class="form-control select2-hidden-accessible"
+                            th:with="teaAll=${@tea.getAllTea()}">
+                        <option th:each="tea : ${teaAll}" th:value="${tea.teaId}" th:text="${tea.name}"
+                                th:field="*{teaId}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">学科类型：</label>
+                <div class="col-sm-8">
+                    <select id="subjectType" class="form-control m-b" name="subjectType"
+                            th:with="subjectType=${@dict.getType('subject_type')}">
+                        <option th:each="dict : ${subjectType}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}" th:field="*{subjectType}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">	
+                <label class="col-sm-3 control-label">班级id：</label>
+                <div class="col-sm-8">
+                    <select id="gradeId" class="form-control m-b" name="gradeId"
+                            th:with="gradeType=${@dict.getType('grade_type')}">
+                        <option th:each="dict : ${gradeType}" th:text="${dict.dictLabel}"
+                                th:value="${dict.dictValue}" th:field="*{gradeId}"></option>
+                    </select>
+                </div>
+            </div>
+			<div class="form-group">
+				<div class="form-control-static col-sm-offset-9">
+					<button type="submit" class="btn btn-primary">提交</button>
+					<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+				</div>
+			</div>
+		</form>
+    </div>
+    <div th:include="include::footer"></div>
+    <script th:src="@{/ajax/libs/select/select2.js}"></script>
+    <script type="text/javascript">
+		var prefix = ctx + "module/teaManager";
+		$("#form-teaManager-edit").validate({
+			submitHandler: function(form) {
+                var data = $('#form-teaManager-edit').serialize();
+                $.ajax({
+                    url: prefix + "/checkUnique",
+                    data: data,
+                    type: "post",
+                    dataType: "text",
+                    success: function(result) {
+                        if(result === 'error'){
+                            layer.msg('保存的数据库存已存在', { icon: 2 });
+                            return false;
+                        }else if (result === 'success'){
+                            $.operate.save(prefix + "/edit", data);
+                        }
+                    }
+                });
+			}
+		});
+	</script>
+</body>
+</html>

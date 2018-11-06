@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.project.module.tea.mapper.TeaExtendMapper">
+    
+    <resultMap type="com.ruoyi.entity.Tea" id="TeaResult">
+        <result property="teaId"    column="tea_id"    />
+        <result property="name"    column="name"    />
+        <result property="sex"    column="sex"    />
+        <result property="phonenumber"    column="phonenumber"    />
+    </resultMap>
+	
+	<sql id="selectTeaVo">
+        select tea_id, name, sex, phonenumber from t_tea
+    </sql>
+	
+    <select id="selectTeaList" parameterType="com.ruoyi.entity.Tea" resultMap="TeaResult">
+        <include refid="selectTeaVo"/>
+        <where>  
+            <if test="teaId != null and teaId != ''"> and tea_id = #{teaId}</if>
+             <if test="name != null and name != ''"> and name = #{name}</if>
+             <if test="sex != null and sex != ''"> and sex = #{sex}</if>
+             <if test="phonenumber != null and phonenumber != ''"> and phonenumber = #{phonenumber}</if>
+         </where>
+    </select>
+    
+    <delete id="deleteTeaByIds" parameterType="String">
+        delete from t_tea where tea_id in 
+        <foreach item="teaId" collection="array" open="(" separator="," close=")">
+            #{teaId}
+        </foreach>
+    </delete>
+    
+</mapper>
