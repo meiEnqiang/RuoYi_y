@@ -58,5 +58,11 @@ public interface ICourseArrangementService
 	 * @return List<CourseArrangementSuper>
 	 */
 	List<CourseArrangementSuper> getCourseArrangementSuperList();
+
+	/**
+	 * 修改已完成的课时
+	 * @return 修改的条数
+	 */
+	int updateFishStatus();
 	
 }

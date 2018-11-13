@@ -23,7 +23,7 @@
             var events = [];
             str.forEach(function (value, i) {
                 events.push({
-                    title: value.course + '\r\n\r   ' + value.grade,
+                    title: value.course + '\r\n' + value.grade,
                     borderColor: value.borderColor,
                     textColor: value.textColor,
                     backgroundColor: value.backgroundColor,
@@ -37,7 +37,7 @@
                 header: {
                     left: 'prev,next today',
                     center: 'title',
-                    right: 'month,agendaWeek,agendaDay,listWeek'
+                    right: 'month,agendaWeek,agendaDay,listDay,listWeek'
                 },
                 //defaultDate: timeStr,
                 locale: 'zh-cn',
@@ -185,15 +185,6 @@
                     });
                 },
                 eventClick : function( event ){
-                    var color = event.textColor;
-                    if (color == '#000000') {
-                        layer.alert("已上课和已关闭的班级课次不能被拖动修改！", {
-                            skin: 'layui-layer-red',
-                            closeBtn: 0, icon: 2
-                        });
-                        revertFunc(); //恢复原状
-                        return;
-                    }
                     var courseArrangementId = event.id;
                     $.modal.open("修改课程", "/module/courseArrangement/edit/" + courseArrangementId);
                 }

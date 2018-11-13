@@ -246,6 +246,14 @@
             	    $.modal.reload();
             	});
             },
+            // 消息提示
+            alertMsg: function(msg, type) {
+            	layer.msg(msg, {
+            	    icon: $.modal.icon(type),
+            	    time: 500,
+            	    shade: [0.1, '#8F8F8F']
+            	})
+            },
             // 错误提示
             alertError: function(content) {
             	$.modal.alert(content, modal_status.FAIL);
@@ -284,10 +292,10 @@
             	}
             	if ($.common.isEmpty(title)) {
                     title = false;
-                };
+                }
                 if ($.common.isEmpty(url)) {
                     url = "/404.html";
-                };
+                }
                 if ($.common.isEmpty(width)) {
                 	width = 800;
                 };
@@ -452,6 +460,24 @@
         	        }
         	    };
         	    $.ajax(config)
+            },
+            // 删除信息
+            del: function(url, id) {
+        		alert(url);
+        		alert(id);
+                //$.modal.confirm("确定删除吗？", function() {
+                    $.modal.loading("正在处理中，请稍后...");
+                    var config = {
+                        url: url,
+                        type: "post",
+                        dataType: "json",
+                        data: {ids:id},
+                        success: function(result) {
+                            $.operate.saveSuccess(result);
+                        }
+                    };
+                    $.ajax(config)
+                //});
             },
             // 保存结果弹出msg刷新table表格
             ajaxSuccess: function (result) {

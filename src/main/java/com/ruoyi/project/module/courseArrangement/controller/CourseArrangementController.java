@@ -1,5 +1,6 @@
 package com.ruoyi.project.module.courseArrangement.controller;
 
+import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.entity.CourseArrangement;
 import com.ruoyi.framework.aspectj.lang.annotation.Log;
 import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
@@ -7,12 +8,15 @@ import com.ruoyi.framework.web.controller.BaseController;
 import com.ruoyi.framework.web.domain.AjaxResult;
 import com.ruoyi.framework.web.page.TableDataInfo;
 import com.ruoyi.project.module.courseArrangement.service.ICourseArrangementService;
+import com.ruoyi.project.module.teaManager.service.ITeaManagerService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -29,12 +33,21 @@ public class CourseArrangementController extends BaseController
 	
 	@Autowired
 	private ICourseArrangementService courseArrangementService;
-	
+	@Autowired
+	private ITeaManagerService teaManagerService;
+
 	@RequiresPermissions("module:courseArrangement:view")
 	@GetMapping()
-	public String courseArrangement(ModelMap mMap)
+	public String courseArrangement(ModelMap mMap, HttpSession session)
 	{
 	    mMap.addAttribute("list",courseArrangementService.getCourseArrangementSuperList());
+		Object timeStr = session.getAttribute("timeStr");
+		if(timeStr == null){
+			timeStr = DateUtils.parseDateToStr("yyyy-MM-dd",new Date());
+		}else {
+			session.removeAttribute("timeStr");
+		}
+		mMap.addAttribute("timeStr", timeStr);
 		return prefix + "/fullcalendar";
 	}
 	
@@ -55,8 +68,11 @@ public class CourseArrangementController extends BaseController
 	 * 新增课程安排
 	 */
 	@GetMapping("/add")
-	public String add()
+	public String add(String time, ModelMap modelMap, HttpSession session)
 	{
+		modelMap.addAttribute("teaMangeMap",teaManagerService.getAllMap());
+		modelMap.addAttribute("timeStr", time + " 00:00:00");
+		session.setAttribute("timeStr", time);
 	    return prefix + "/add";
 	}
 	
@@ -80,6 +96,7 @@ public class CourseArrangementController extends BaseController
 	{
 		CourseArrangement courseArrangement = courseArrangementService.selectCourseArrangementById(courseArrangementId);
 		mmap.put("courseArrangement", courseArrangement);
+		mmap.addAttribute("teaMangeMap",teaManagerService.getAllMap());
 	    return prefix + "/edit";
 	}
 	

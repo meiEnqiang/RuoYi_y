@@ -97,4 +97,17 @@ $.ajaxSetup({
         	})
         }
     }
-}); 
+});
+
+$(function () {
+    laydate.render({
+        elem: '.lay_time',
+        theme: 'molv',
+        type: 'time'
+    });
+    laydate.render({
+        elem: '.lay_dateTime',
+        theme: 'molv',
+        type: 'datetime'
+    });
+});

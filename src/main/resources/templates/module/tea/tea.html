@@ -21,7 +21,8 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('module:tea:edit')}]];
         var removeFlag = [[${@permission.hasPermi('module:tea:remove')}]];
-        var prefix = ctx + "module/tea"
+        var sexDatas = [[${@dict.getType('sys_user_sex')}]];
+        var prefix = ctx + "module/tea";
 
         $(function() {
             var options = {
@@ -43,7 +44,10 @@
 				},
 				{
 					field : 'sex', 
-					title : '用户性别（0男 1女 2未知）' 
+					title : '性别',
+                    formatter: function (value, item, index) {
+                        return $.table.selectDictLabel(sexDatas, item.sex);
+                    }
 				},
 				{
 					field : 'phonenumber', 

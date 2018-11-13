@@ -1,13 +1,17 @@
 package com.ruoyi.project.module.teaManager.service;
 
+import com.google.common.collect.Maps;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.entity.TeaManager;
 import com.ruoyi.entity.TeaManagerExample;
+import com.ruoyi.project.module.tea.service.ITeaService;
 import com.ruoyi.project.module.teaManager.mapper.TeaManagerExtendMapper;
+import com.ruoyi.project.system.dict.service.IDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 教师管理 服务层实现
@@ -20,6 +24,10 @@ public class TeaManagerServiceImpl implements ITeaManagerService
 {
 	@Autowired
 	private TeaManagerExtendMapper teaManagerMapper;
+	@Autowired
+	private IDictDataService dictDataService;
+	@Autowired
+	private ITeaService teaService;
 
 	/**
      * 查询教师管理信息
@@ -100,5 +108,23 @@ public class TeaManagerServiceImpl implements ITeaManagerService
 			return "error";
 		}
 		return "success";
+	}
+	/**
+	 * 获取所有教师管理
+	 * @return Map<Integer,String>
+	 */
+	@Override
+	public Map<Integer,String> getAllMap(){
+		Map<Integer,String> map = Maps.newHashMap();
+		List<TeaManager> list = selectTeaManagerList(null);
+		for (TeaManager teaManager : list) {
+			StringBuilder stringBuilder = new StringBuilder();
+			String name = teaService.selectTeaById(teaManager.getTeaId()).getName();
+			String subjectType = dictDataService.selectDictLabel("subject_type",teaManager.getSubjectType() + "");
+			String gradeType = dictDataService.selectDictLabel("grade_type",teaManager.getGradeId() + "");
+			stringBuilder.append(name).append(" ").append(subjectType).append(" ").append(gradeType);
+			map.put(teaManager.getTeaManagerId(),stringBuilder.toString());
+		}
+		return map;
 	}
 }

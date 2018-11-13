@@ -3,6 +3,7 @@ package com.ruoyi.project.module.courseArrangement.service;
 import com.google.common.collect.Lists;
 import com.ruoyi.common.support.Convert;
 import com.ruoyi.entity.CourseArrangement;
+import com.ruoyi.entity.CourseArrangementExample;
 import com.ruoyi.entity.TeaManager;
 import com.ruoyi.entitySuper.CourseArrangementSuper;
 import com.ruoyi.project.module.courseArrangement.mapper.CourseArrangementExtendMapper;
@@ -12,6 +13,7 @@ import com.ruoyi.project.system.dict.service.IDictDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -112,16 +114,34 @@ public class CourseArrangementServiceImpl implements ICourseArrangementService
 						subject + "");
 				String subjectStr = subjectData.getDictLabel();
 				String subjectCss = subjectData.getCssClass();
+				String textColor = "#0F0B0C";
+				if(courseArrangement.getStatus()){
+					subjectCss = "#74551A";
+					textColor = "#000000";
+				}
 				courseArrangementSuper.setStart(courseArrangement.getStartTime());
 				courseArrangementSuper.setEnd(courseArrangement.getEndTime());
 				courseArrangementSuper.setBackgroundColor(subjectCss);
 				courseArrangementSuper.setBorderColor(gradeCss);
 				courseArrangementSuper.setCourse(subjectStr);
 				courseArrangementSuper.setGrade(gradeStr);
+				courseArrangementSuper.setTextColor(textColor);
+				courseArrangementSuper.setId(courseArrangement.getCourseArrangementId());
 				result.add(courseArrangementSuper);
 			}
 		}
 		return result;
 	}
-	
+	/**
+	 * 修改已完成的课时
+	 * @return 修改的条数
+	 */
+	@Override
+	public int updateFishStatus(){
+		CourseArrangementExample example = new CourseArrangementExample();
+		example.createCriteria().andStatusEqualTo(false).andEndTimeLessThanOrEqualTo(new Date());
+		CourseArrangement courseArrangement = new CourseArrangement();
+		courseArrangement.setStatus(true);
+		return courseArrangementMapper.updateByExampleSelective(courseArrangement,example);
+	}
 }

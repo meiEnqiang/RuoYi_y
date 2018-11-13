@@ -14,6 +14,9 @@ public class CourseArrangementSuper {
     private String grade;
     private String borderColor;
     private String backgroundColor;
+    private String textColor;
     private Date start;
     private Date end;
+    private Integer id;
+    private Boolean status;
 }

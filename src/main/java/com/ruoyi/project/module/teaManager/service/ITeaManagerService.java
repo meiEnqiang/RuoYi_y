@@ -2,6 +2,7 @@ package com.ruoyi.project.module.teaManager.service;
 
 import com.ruoyi.entity.TeaManager;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 教师管理 服务层
@@ -57,5 +58,11 @@ public interface ITeaManagerService
 	 * @return string "1" 没有 "0" 有
 	 */
 	String checkUnique(TeaManager teaManager);
+
+	/**
+	 * 获取所有教师管理
+	 * @return Map<Integer,String>
+	 */
+	Map<Integer,String> getAllMap();
 	
 }

@@ -21,7 +21,7 @@
     <script th:inline="javascript">
         var editFlag = [[${@permission.hasPermi('module:courseArrangement:edit')}]];
         var removeFlag = [[${@permission.hasPermi('module:courseArrangement:remove')}]];
-        var prefix = ctx + "module/courseArrangement"
+        var prefix = ctx + "module/courseArrangement";
 
         $(function() {
             var options = {
