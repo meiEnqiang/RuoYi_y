@@ -19,6 +19,7 @@
     <script type="text/javascript" th:inline="javascript">
         $(document).ready(function () {
             var str = [[${list}]];
+            var ctx = [[@{/}]];
             var timeStr = '[[${timeStr}]]';
             var events = [];
             str.forEach(function (value, i) {
@@ -49,7 +50,7 @@
                 select: function (date, start, end) {
                     var dateTime = date.format();
                     //iframe窗
-                    $.modal.open("添加课程", "/module/courseArrangement/add?time=" + dateTime);
+                    $.modal.open("添加课程", ctx +"module/courseArrangement/add?time=" + dateTime);
                     /*layer.open({
                         type: 1,
                         title: '课程安排',
@@ -195,7 +196,7 @@
                         return;
                     }
                     var courseArrangementId = event.id;
-                    $.modal.open("修改课程", "/module/courseArrangement/edit/" + courseArrangementId);
+                    $.modal.open("修改课程", ctx + "module/courseArrangement/edit/" + courseArrangementId);
                 }
 
             });
