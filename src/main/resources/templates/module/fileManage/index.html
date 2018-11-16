@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<meta charset="utf-8">
+<head th:include="include :: header"></head>
+<link rel="stylesheet" th:href="@{/ajax/libs/ssi_uploader/css/ssi-uploader.css}"/>
+
+<body class="white-bg">
+
+<!--
+<input type="file" multiple id="ssi-upload"/>
+-->
+
+<div class="wrapper wrapper-content animated fadeInRight ibox-content">
+	<form class="form-horizontal m" id="form-fileManage-add" enctype="multipart/form-data">
+		<div class="form-group">
+			<label class="col-sm-3 control-label">文件名称：</label>
+			<div class="col-sm-8">
+				<input id="fileName" name="fileName" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">上传文件：</label>
+			<div class="col-sm-8">
+				<!--<input id="file" name="file" multiple class="form-control" type="file">-->
+				<input type="file" name="file" multiple id="ssi-upload"/>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">文件类型：</label>
+			<div class="col-sm-8">
+				<select id="fileType" class="form-control m-b" name="fileType" th:with="fileType=${@dict.getType('t_file_type')}">
+					<option th:each="dict : ${fileType}" th:text="${dict.dictLabel}" th:value="${dict.dictValue}"></option>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label">备注：</label>
+			<div class="col-sm-8">
+				<input id="remark" name="remark" class="form-control" type="text">
+			</div>
+		</div>
+		<div class="form-group">
+			<div class="form-control-static col-sm-offset-9">
+				<button type="submit" class="btn btn-primary">提交</button>
+				<button onclick="$.modal.close()" class="btn btn-danger" type="button">关闭</button>
+			</div>
+		</div>
+	</form>
+</div>
+<div th:include="include::footer"></div>
+	<script th:src="@{/ajax/libs/ssi_uploader/js/ssi-uploader.js}"></script>
+	<script type="text/javascript">
+		$(function () {
+            $('#ssi-upload').ssi_uploader({url:'#',maxFileSize:6,allowed:['jpg','gif','txt','png','pdf']});
+            var prefix = ctx + "module/fileManage";
+            $("#form-fileManage-add").validate({
+                rules:{
+                    fileName:{
+                        required:true,
+                        remote: {
+                            url: prefix + "/checkFileNameUnique",
+                            type: "post",
+                            dataType: "json",
+                            data: {
+                                "fileId": "-1",
+                                "fileName" : function() {
+                                    return $.common.trim($("#fileName").val());
+                                }
+                            },
+                            dataFilter: function(data, type) {
+                                return $.validate.unique(data);
+                            }
+                        }
+                    },
+                    file:{
+                        required:true
+                    }
+                },
+                messages: {
+                    "fileName": {
+                        remote: "文件名称已经存在！"
+                    }
+                },
+                submitHandler: function(form) {
+                    //$.operate.save(prefix + "/add", $('#form-fileManage-add').serialize());
+                    /*var picFileList = $("#file").get(0).files;
+                    var formData = new FormData();
+                    for(var i=0; i< picFileList.length; i++){
+                        formData.append("file" , picFileList[i] );
+                    }
+                    formData.append("fileName", $("#fileName").val());
+                    formData.append("fileType", $("#fileType").val());
+                    formData.append("remark", $("#remark").val());*/
+                    alert(new FormData($("#form-fileManage-add")[0]));
+                    $.ajax({
+                        url: prefix + "/add",
+                        data: new FormData($("#form-fileManage-add")[0]),
+                        type: "post",
+                        processData: false,
+                        contentType: false,
+                        success: function(result) {
+                            $.operate.saveSuccess(result);
+                        }
+                    })
+                }
+            });
+        });
+	</script>
+</body>
+</html>

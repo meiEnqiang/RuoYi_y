@@ -1,13 +1,13 @@
 package com.ruoyi.framework.shiro.web.filter.captcha;
 
+import com.google.code.kaptcha.Constants;
+import com.ruoyi.common.constant.ShiroConstants;
+import com.ruoyi.common.utils.security.ShiroUtils;
+import org.apache.shiro.web.filter.AccessControlFilter;
+
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
-import org.apache.shiro.web.filter.AccessControlFilter;
-import com.google.code.kaptcha.Constants;
-import com.ruoyi.common.constant.ShiroConstants;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.security.ShiroUtils;
 
 /**
  * 验证码过滤器
@@ -20,7 +20,7 @@ public class CaptchaValidateFilter extends AccessControlFilter
     /**
      * 是否开启验证码
      */
-    private boolean captchaEnabled = true;
+    private boolean captchaEnabled = false;
 
     /**
      * 验证码类型
@@ -62,10 +62,11 @@ public class CaptchaValidateFilter extends AccessControlFilter
     {
         Object obj = ShiroUtils.getSession().getAttribute(Constants.KAPTCHA_SESSION_KEY);
         String code = String.valueOf(obj != null ? obj : "");
-        if (StringUtils.isEmpty(validateCode) || !validateCode.equalsIgnoreCase(code))
+        //验证码取消
+        /*if (StringUtils.isEmpty(validateCode) || !validateCode.equalsIgnoreCase(code))
         {
             return false;
-        }
+        }*/
         return true;
     }
 

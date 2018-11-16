@@ -38,9 +38,9 @@ public class TestGeneratorController extends BaseController
 	@GetMapping()
 	public String testGenerator(ModelMap mMap)
 	{
-	    //return prefix + "/testGenerator";
-		mMap.addAttribute("list",courseArrangementService.getCourseArrangementSuperList());
-	    return prefix + "/fullcalendar";
+	    return prefix + "/testGenerator";
+		/*mMap.addAttribute("list",courseArrangementService.getCourseArrangementSuperList());
+	    return prefix + "/fullcalendar";*/
 	}
 	
 	/**

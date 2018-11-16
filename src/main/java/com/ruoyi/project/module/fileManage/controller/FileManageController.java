@@ -1,22 +1,20 @@
 package com.ruoyi.project.module.fileManage.controller;
 
-import java.util.List;
-
-import com.ruoyi.entitySuper.FileManageSuper;
-import com.ruoyi.project.system.dept.domain.Dept;
+import com.ruoyi.entity.FileManage;
+import com.ruoyi.framework.aspectj.lang.annotation.Log;
+import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
+import com.ruoyi.framework.web.controller.BaseController;
+import com.ruoyi.framework.web.domain.AjaxResult;
+import com.ruoyi.framework.web.page.TableDataInfo;
+import com.ruoyi.project.module.fileManage.service.IFileManageService;
 import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
-import com.ruoyi.framework.aspectj.lang.annotation.Log;
-import com.ruoyi.framework.aspectj.lang.enums.BusinessType;
-import com.ruoyi.entity.FileManage;
-import com.ruoyi.project.module.fileManage.service.IFileManageService;
-import com.ruoyi.framework.web.controller.BaseController;
-import com.ruoyi.framework.web.page.TableDataInfo;
-import com.ruoyi.framework.web.domain.AjaxResult;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * 文件管理 信息操作处理
@@ -59,9 +57,10 @@ public class FileManageController extends BaseController
 	@GetMapping("/add")
 	public String add()
 	{
-	    return prefix + "/add";
+		//return prefix + "/index";
+		return prefix + "/add";
 	}
-	
+
 	/**
 	 * 新增保存文件管理
 	 */
@@ -69,7 +68,7 @@ public class FileManageController extends BaseController
 	@Log(title = "文件管理", businessType = BusinessType.INSERT)
 	@PostMapping("/add")
 	@ResponseBody
-	public AjaxResult addSave(FileManage fileManage, @RequestParam("file") MultipartFile file)
+	public AjaxResult addSave(FileManage fileManage, @RequestParam("file") List<MultipartFile> file)
 	{
 		return toAjax(fileManageService.saveFile(fileManage,file));
 	}

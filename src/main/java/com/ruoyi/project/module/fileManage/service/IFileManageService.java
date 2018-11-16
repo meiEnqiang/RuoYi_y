@@ -69,6 +69,13 @@ public interface IFileManageService
 	 * @return 保存的条数
 	 */
 	int saveFile(FileManage fileManage, MultipartFile file);
+	/**
+	 * 保存文件
+	 * @param fileManage 文件实体类
+	 * @param files 上传的文件
+	 * @return 保存的条数
+	 */
+	int saveFile(FileManage fileManage, List<MultipartFile> files);
 
 	/**
 	 * 根据主id和文件名字判断是否有相同的
